@@ -1,0 +1,131 @@
+/* Reset & Base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: #ffffff;
+  color: #222;
+  line-height: 1.6;
+}
+
+/* Container */
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+/* Header */
+header.hero {
+  background: linear-gradient(135deg, #101935, #003366);
+  color: #fff;
+  padding: 80px 20px 60px;
+  border-bottom: 4px solid #00c3ff;
+}
+
+/* Headings */
+.hero h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+        
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+}
+
+/* Telegram Button */
+.btn.telegram-btn {
+  background-color: #00c3ff;
+  color: #fff;
+  text-decoration: none;
+  padding: 15px 30px;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: 0.3s ease;
+  display: inline-block;
+}
+
+.btn.telegram-btn:hover {
+  background-color: #008fcc;
+  transform: scale(1.05);
+}
+
+/* Sections */
+section {
+  padding: 60px 20px;
+  background-color: #f9f9f9;
+}
+
+section:nth-child(even) {
+  background-color: #ffffff;
+}
+
+section h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #003366;
+}
+
+section p {
+  font-size: 1.05rem;
+  max-width: 800px;
+  margin: 10px auto;
+  color: #333;
+}
+
+/* Footer */
+footer {
+  background-color: #101935;
+  color: #aaa;
+  text-align: center;
+  padding: 30px 20px;
+  font-size: 0.95rem;
+}
+
+/* Animations */
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 1s forwards;
+}
+
+.delay-1 {
+  animation-delay: 0.3s;
+}
+.delay-2 {
+  animation-delay: 0.6s;
+}
+.delay-3 {
+  animation-delay: 0.9s;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .hero h1 {
+    font-size: 2rem;
+  }
+
+  .hero p, section p {
+    font-size: 1rem;
+  }
+
+  .btn.telegram-btn {
+    padding: 12px 24px;
+    font-size: 1rem;
+  }
+}
