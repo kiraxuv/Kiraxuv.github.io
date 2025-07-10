@@ -1,131 +1,943 @@
-/* Reset & Base */
-* {
+/* 🔻 Sticky Footer Setup (Hamesha Neeche Rahe) */
+html, body {
+  height: 100%;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  flex-direction: column;
 }
 
+.main-content {
+  flex: 1;
+}
+
+/* Reset & Fallback */
 body {
-  background-color: #ffffff;
-  color: #222;
-  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  background: #000 url('fallback.jpg') no-repeat center center fixed;
+  background-size: cover;
+  overflow-x: hidden;
+  color: white;
+  /* Remove height: 100% and position: relative from body if they conflict */
+  /* height: 100%; */ /* This might interfere with scrolling if body is limited */
+  /* position: relative; */ /* Not needed if video is fixed to viewport */
 }
 
-/* Container */
+/* Ensure the body itself allows scrolling for content */
+html, body {
+  min-height: 100%; /* Ensures content can push body height */
+}
+
+
+body::before {
+  content: "";
+  position: fixed; /* Keep fixed so it stays with the video */
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: inherit;
+  filter: brightness(0.75) blur(0.2px);
+  z-index: -1;
+}
+
+#bg-video {
+  /* ✅ Change to fixed positioning */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw; /* Ensure it covers the full viewport width */
+  height: 100vh; /* Ensure it covers the full viewport height */
+  object-fit: cover;
+  filter: brightness(0.75) blur(0.2px);
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 1s ease;
+  /* These are good for ensuring coverage, keep them */
+  min-width: 100%;
+  min-height: 100%;
+}
+
+#fallback-image {
+  /* ✅ Change to fixed positioning */
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; /* Ensure it covers the full viewport width */
+  height: 100vh; /* Ensure it covers the full viewport height */
+  object-fit: cover;
+  z-index: -2;
+  opacity: 1;
+  transition: opacity 1s ease;
+}
+
+
 .container {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 20px;
   text-align: center;
+  padding: 80px 20px;
+  position: relative;
+  z-index: 2;
 }
 
-/* Header */
-header.hero {
-  background: linear-gradient(135deg, #101935, #003366);
-  color: #fff;
-  padding: 80px 20px 60px;
-  border-bottom: 4px solid #00c3ff;
+.heading {
+  font-size: clamp(1.8rem, 6vw, 3rem);
+  margin-bottom: 10px;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeUp 1s ease-out forwards;
+  animation-delay: 0.2s;
+  color: white;
 }
 
-/* Headings */
-.hero h1 {
-  font-size: 3rem;
-  margin-bottom: 20px;
-  font-weight: 700;
-}
-        
-.hero p {
-  font-size: 1.2rem;
-  margin-bottom: 30px;
+.highlight {
+  color: #00d1ff;
+  text-shadow: 0 0 10px #00d1ff;
+  position: relative;
 }
 
-/* Telegram Button */
-.btn.telegram-btn {
-  background-color: #00c3ff;
-  color: #fff;
-  text-decoration: none;
-  padding: 15px 30px;
+.typing-text {
+  font-size: clamp(1rem, 5vw, 1.5rem);
+  margin-top: 10px;
+  color: #ccc;
+}
+
+/* .typing-text::after {
+  content: "|";
+  animation: blink 0.8s infinite;
+} */
+
+.sub-text {
+  font-size: clamp(0.9rem, 4vw, 1.1rem);
+  color: #ccc;
+  margin: 20px auto 30px;
+  max-width: 300px;
+}
+
+.join-btn {
+  background: linear-gradient(135deg, #00d1ff, #0066ff);
+  padding: 12px 25px;
   border-radius: 50px;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 600;
-  transition: 0.3s ease;
-  display: inline-block;
+  color: white;
+  text-decoration: none;
+  box-shadow: 0 0 15px #00d1ff;
+  transition: all 0.3s ease;
+  animation: glowPulse 2.5s infinite;
+  display: inline-block; /* Essential for padding and margins to work on an anchor tag */
 }
 
-.btn.telegram-btn:hover {
-  background-color: #008fcc;
+.join-btn:hover {
   transform: scale(1.05);
+  box-shadow: 0 0 25px #00d1ff, 0 0 45px #0066ff;
 }
 
-/* Sections */
-section {
-  padding: 60px 20px;
-  background-color: #f9f9f9;
+.join-btn:active {
+  transform: scale(0.97);
+  box-shadow: 0 0 20px #00d1ff inset;
 }
 
-section:nth-child(even) {
-  background-color: #ffffff;
+.socials {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  font-size: 24px;
+  color: white;
 }
 
-section h2 {
-  font-size: 2rem;
-  margin-bottom: 20px;
-  color: #003366;
+.socials a {
+  color: white;
+  text-decoration: none;
+  transition: transform 0.3s;
 }
 
-section p {
-  font-size: 1.05rem;
-  max-width: 800px;
-  margin: 10px auto;
-  color: #333;
-}
-
-/* Footer */
-footer {
-  background-color: #101935;
-  color: #aaa;
-  text-align: center;
-  padding: 30px 20px;
-  font-size: 0.95rem;
+.socials a:hover {
+  transform: scale(1.2);
 }
 
 /* Animations */
-.fade-in-up {
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp 1s forwards;
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
 
-.delay-1 {
-  animation-delay: 0.3s;
-}
-.delay-2 {
-  animation-delay: 0.6s;
-}
-.delay-3 {
-  animation-delay: 0.9s;
-}
-
-@keyframes fadeInUp {
+@keyframes fadeUp {
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-/* Responsive Design */
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 15px #00d1ff; }
+  50% { box-shadow: 0 0 30px #00d1ff, 0 0 50px #0066ff; }
+}
+
+/* Mobile responsive */
+@media (max-width: 400px) {
+  .container {
+    padding: 60px 15px;
+  }
+
+  .join-btn {
+    font-size: 0.95rem;
+    padding: 10px 20px;
+  }
+}
+
+/* --- Footer Glass Card Style (Upgraded) --- */
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  min-height: 120px;
+  padding: 40px 10px 30px;
+  background: transparent;
+  margin-top: 50px;
+}
+
+.footer-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 15px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  padding: 20px 15px;
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+  box-shadow: 0 0 25px rgba(0, 209, 255, 0.1);
+  font-size: 0.8rem;
+}
+
+.footer-links {
+  margin-bottom: 12px;
+}
+
+.footer-links a {
+  color: #00d1ff;
+  text-decoration: none;
+  margin: 0 8px;
+  font-weight: 500;
+  font-size: 0.85rem;
+  transition: color 0.3s;
+}
+
+.footer-links a:hover {
+  color: #fff;
+}
+
+.footer-icons {
+  margin: 8px 0;
+  font-size: 18px;
+}
+
+.footer-icons a {
+  margin: 0 8px;
+  color: #00d1ff;
+  transition: transform 0.3s ease;
+}
+
+.footer-icons a:hover {
+  transform: scale(1.2);
+  color: #fff;
+}
+
+.footer-bottom {
+  margin-top: 8px;
+  color: #aaa;
+  font-size: 0.75rem;
+}
+
+
+.nav-right .nav-btn:hover {
+  background: linear-gradient(45deg, #0099ff, #0044cc);
+}
+
+/* --- Mobile responsive --- */
+@media (max-width: 400px) {
+  .search-input {
+    max-width: 120px;
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+
+  .nav-right .nav-btn {
+    padding: 4px 8px;
+    font-size: 11.5px;
+  }
+
+  .nav-left i {
+    font-size: 16px;
+  }
+}
+/* --- NAVBAR STYLING WITH EXACT 5PX GAPS --- */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  padding: 0 10px;
+  box-sizing: border-box;
+  z-index: 999;
+}
+
+/* Left: 3-line menu */
+.nav-left {
+  width: 30px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.nav-left i {
+  font-size: 20px;
+  color: white;
+  cursor: pointer;
+}
+
+/* Right: Login */
+.nav-right {
+  width: 80px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.nav-right .nav-btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 20px;
+  background: linear-gradient(45deg, #00d1ff, #0066ff);
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: 0.3s ease;
+}
+
+.nav-right .nav-btn:hover {
+  background: linear-gradient(45deg, #0099ff, #0044cc);
+}
+
+/* Center: Search bar with exact spacing */
+.nav-center {
+  flex: 1;
+  margin: 0 5px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: none;
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+/* Mobile adjustments */
+@media (max-width: 400px) {
+  .navbar {
+    height: 48px;
+    padding: 0 8px;
+  }
+
+  .nav-right {
+    width: 70px;
+  }
+
+  .nav-left {
+    width: 26px;
+  }
+
+  .search-input {
+    font-size: 13px;
+    padding: 5px 12px;
+  }
+
+  .nav-right .nav-btn {
+    font-size: 12px;
+    padding: 5px 10px;
+  }
+
+  .nav-left i {
+    font-size: 18px;
+  }
+}
+
+/* --- LOGIN MODAL STYLING --- */
+.login-modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.login-modal.show {
+  display: flex;
+}
+
+.login-box {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 30px 25px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  text-align: center;
+  color: white;
+  width: 90%;
+  max-width: 320px;
+}
+
+.login-box h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.login-input {
+  width: 100%;
+  padding: 10px 15px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  border: none;
+  background: rgba(255,255,255,0.15);
+  color: white;
+  font-size: 14px;
+  outline: none;
+  text-align: center;
+}
+
+.login-submit {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  background: linear-gradient(45deg, #00d1ff, #0066ff);
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.login-switch {
+  margin-top: 12px;
+  font-size: 13px;
+  color: #ccc;
+}
+
+.login-switch a {
+  color: #00c6ff;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* --- LOGIN MODAL STYLING - FINAL CLEAN --- */
+.login-modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(6px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+  z-index: 2000;
+}
+
+.login-modal.show {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* --- Glassy Gradient Border Box --- */
+.login-box {
+  position: relative;
+  background: rgba(17, 17, 17, 0.7);
+  padding: 30px 25px;
+  border-radius: 30px;
+  width: 300px;
+  text-align: center;
+  transform: scale(0.85) translateY(-20px);
+  animation: popupZoom 0.4s ease-out forwards;
+  box-shadow: 0 0 40px 6px rgba(0, 209, 255, 0.3); /* glowing effect only */
+}
+
+@keyframes popupZoom {
+  from {
+    transform: scale(0.8) translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+/* --- Close (X) Button --- */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  font-size: 22px;
+  color: #aaa;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+.close-btn:hover {
+  color: #fff;
+}
+
+/* --- Heading --- */
+.login-box h2 {
+  color: #00d1ff;
+  margin-bottom: 20px;
+  font-size: 22px;
+}
+
+/* --- Inputs with Glow + Circle --- */
+.login-input {
+  width: 85%;
+  padding: 12px 16px;
+  margin: 10px auto;
+  border-radius: 50px;
+  border: none;
+  background: rgba(255,255,255,0.08);
+  color: white;
+  font-size: 14px;
+  text-align: center;
+  outline: none;
+  transition: box-shadow 0.3s ease;
+}
+
+.login-input:focus {
+  box-shadow: 0 0 10px #00d1ff;
+}
+
+/* --- Login Button --- */
+.login-submit {
+  width: 65%;
+  padding: 10px 18px;
+  margin-top: 12px;
+  border-radius: 50px;
+  background: linear-gradient(45deg, #00d1ff, #0066ff);
+  color: white;
+  border: none;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.login-submit:hover {
+  background: linear-gradient(45deg, #0088ff, #0044cc);
+}
+
+/* --- Sign up switch --- */
+.login-switch {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #ccc;
+}
+
+.login-switch a {
+  color: #00d1ff;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* --- Sidebar menu styles (Final Fix for complete hiding) --- */
+
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.4); /* Thoda transparent black overlay */
+  display: none; /* <-- YE HAI SABSE IMPORTANT: Shuru mein bilkul hidden */
+  opacity: 0; /* Smooth fade-in/out ke liye */
+  transition: opacity 0.3s ease; /* Overlay ke smooth transition ke liye */
+  z-index: 1001; /* Content ke upar, sidebar ke neeche */
+}
+
+.sidebar-overlay.show {
+  display: block; /* Jab 'show' class लगे, تب دکھے */
+  opacity: 1; /* Poora visible ho jaye */
+}
+
+.sidebar-menu {
+  position: fixed;
+  top: 0;
+  /* <-- YE HAI SABSE IMPORTANT: Sidebar ko screen ke left se poori tarah bahar kar do */
+  /* Aapki sidebar ki width 230px hai. Toh -230px se zyada negative value rakhein */
+  /* -240px ya -250px isko poori tarah hide kar dega */
+  left: -280px; /* <-- FINAL VALUE: Ye sidebar ko poori tarah hide karega */
+  width: 230px; /* Sidebar ki actual चौड़ाई (width) */
+  height: 100vh; /* Poori height */
+  background: #111; /* Sidebar ka background color */
+  padding: 20px; /* Sidebar ke andar content ke liye padding */
+  box-shadow: 4px 0 10px rgba(0,0,0,0.4); /* Halki si shadow */
+  z-index: 1002; /* Overlay se upar rakho sidebar ko */
+  transition: left 0.3s ease; /* Left se smooth slide-in/slide-out effect */
+}
+
+.sidebar-menu.show {
+  left: 0; /* Jab 'show' class लगे, toh sidebar left edge par aa jaaye */
+}
+
+/* Sidebar ke andar ke elements ka CSS jaisa hai waisa hi rehne dein */
+.sidebar-menu .close-sidebar {
+  text-align: right;
+  font-size: 22px;
+  color: white;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.sidebar-menu ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar-menu ul li {
+  margin: 20px 0;
+}
+
+.sidebar-menu ul li a {
+  color: #00d1ff;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 16px;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidebar-menu ul li a i {
+    margin-right: 8px;
+}
+
+.sidebar-menu ul li a:hover {
+  color: #fff;
+}
+/* For Date of Birth placeholder and value visibility and centering */
+.login-input[type="date"] {
+  color: #fff; /* Default text color for selected date */
+  text-align: center; /* This centers the selected date */
+  position: relative; /* Needed for absolute positioning of the pseudo-element */
+  padding-left: 16px; /* Adjust as per your input padding */
+  padding-right: 16px; /* Adjust as per your input padding */
+  /* IMPORTANT: Add these to remove default browser styling for date input */
+  -webkit-appearance: none; /* For Chrome, Safari */
+  -moz-appearance: none;    /* For Firefox */
+  appearance: none;         /* Standard */
+  cursor: text; /* Ensures text cursor even if icon is present */
+}
+
+/* Hide the default date picker's displayed text parts for consistent placeholder appearance */
+/* Important: This part specifically makes the *default* date format text transparent. */
+.login-input[type="date"]::-webkit-datetime-edit-text,
+.login-input[type="date"]::-webkit-datetime-edit-month-field,
+.login-input[type="date"]::-webkit-datetime-edit-day-field,
+.login-input[type="date"]::-webkit-datetime-edit-year-field {
+  color: transparent !important; /* Forces the default text to be transparent */
+}
+
+/* Hide the default dropdown arrow for cleaner look */
+.login-input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1); /* Makes the calendar icon white */
+  opacity: 0.8; /* Make it slightly visible */
+  cursor: pointer;
+  /* Position the calendar icon on the right */
+  position: absolute;
+  right: 10px; /* Adjust as needed */
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1; /* Make sure the indicator is clickable */
+}
+
+/* Show custom placeholder text ONLY if input value is empty */
+/* This is the key change. We use :empty which means the input has no value */
+.login-input[type="date"]:empty::before {
+  content: attr(placeholder); /* Gets text from placeholder attribute */
+  color: rgba(255,255,255,0.4); /* Placeholder color */
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 50%; /* Center vertically */
+  transform: translateY(-50%); /* Adjust for perfect vertical centering */
+  pointer-events: none; /* Allows clicks to pass through to the actual input */
+  text-align: center; /* Ensure placeholder text is centered */
+  z-index: 0; /* Behind the calendar icon and actual text */
+}
+
+/* When a value IS set, make the actual date text visible and centered */
+/* This rule ensures the entered date is visible and replaces the placeholder. */
+.login-input[type="date"]:not(:empty) {
+  color: #fff !important; /* Make sure the text is white and visible */
+  text-align: center; /* Ensures the valid date is centered */
+}
+
+/* Ensure the text is visible when focused too */
+.login-input[type="date"]:focus {
+  color: #fff !important; /* Text color when input is focused */
+}
+
+
+/* To ensure the default value (e.g., 'dd/mm/yyyy') is also centered and not just the selected date */
+/* This rule is redundant if :placeholder-shown is used correctly, but good for fallback */
+/* .login-input[type="date"] {
+  text-align: center;
+} */
+
+
+/* --- START: Consolidated Mobile Input Styles --- */
+/* यह नया कंटेनर है जो मोबाइल नंबर और कंट्री कोड को एक ही लाइन में रखेगा */
+.single-mobile-input {
+    display: flex; /* flexbox का उपयोग ताकि दोनों एक लाइन में हों */
+    align-items: center; /* वर्टिकल सेंटर अलाइनमेंट */
+    /* justify-content: center; */ /* इसे हटा दें ताकि कंट्री कोड लेफ्ट में अलाइन हो */
+    margin: 10px auto 15px auto; /* ऊपर और नीचे मार्gin, और हॉरिज़ॉन्टल सेंटर */
+    width: 85%; /* पूरे login-box के इनपुट के जैसी चौड़ाई */
+    background: rgba(255,255,255,0.08); /* इनपुट के जैसा बैकग्राउंड */
+    border-radius: 50px; /* गोलाकार किनारे */
+    padding: 0 10px; /* अंदरूनी पैडिंग */
+    box-sizing: border-box; /* पैडिंग को चौड़ाई में शामिल करें */
+    height: 40px; /* fixed height for consistent look */
+    /* Transition for glow on focus (similar to login-input) */
+    transition: box-shadow 0.3s ease;
+}
+
+.single-mobile-input:focus-within {
+    box-shadow: 0 0 10px #00d1ff; /* जब कोई भी इनपुट focus में हो तो पूरे बॉक्स पर glow */
+}
+
+/* मोबाइल नंबर इनपुट फ़ील्ड */
+.single-mobile-input .login-input {
+    flex-grow: 1; /* बची हुई जगह ले लेगा */
+    border: none; /* कोई बॉर्डर नहीं */
+    background: transparent; /* पारदर्शी बैकग्राउंड */
+    color: white;
+    font-size: 14px;
+    outline: none; /* आउटलाइन हटाएँ */
+    padding: 0 5px; /* इनपुट के अंदर की पैडिंग */
+    text-align: left; /* 🟢 UPDATED: मोबाइल नंबर लेफ्ट में रहेगा */
+    margin: 0; /* पैरेंट flexbox में होने के कारण मार्gin हटा दें */
+}
+
+/* कंट्री कोड सिलेक्ट बॉक्स */
+.country-code-select {
+    border: none; /* कोई बॉर्डर नहीं */
+    background: transparent; /* पारदर्शी बैकग्राउंड */
+    color: white;
+    font-size: 14px;
+    outline: none; /* आउटलाइन हटाएँ */
+    appearance: none; /* डिफ़ॉल्ट तीर हटाएँ */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+    text-align: center; /* 🟢 UPDATED: कंट्री कोड अपने छोटे बॉक्स में सेंटर में रहेगा */
+    padding: 0 5px; /* पैडिंग */
+    min-width: 50px; /* न्यूनतम चौड़ाई */
+    max-width: 70px; /* अधिकतम चौड़ाई */
+    text-overflow: ellipsis; /* यदि टेक्स्ट लंबा हो तो ... दिखाएँ */
+    white-space: nowrap; /* टेक्स्ट को एक लाइन में रखें */
+    overflow: hidden; /* ओवरफ्लो को छुपाएँ */
+
+    /* Add a small right border to visually separate */
+    border-right: 1px solid rgba(255,255,255,0.2); /* 🟢 NEW: एक पतली वर्टिकल लाइन */
+    margin-right: 10px; /* 🟢 NEW: कंट्री कोड और मोबाइल इनपुट के बीच जगह */
+
+    /* कस्टम तीर (arrow) */
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23ffffff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 5px center; /* 🟢 UPDATED: तीर को थोड़ा राइट में खिसकाया ताकि बॉर्डर से दूर रहे */
+    background-size: 16px;
+}
+
+/* ड्रॉपडाउन खुलने पर ऑप्शन का स्टाइल */
+.country-code-select option {
+    background-color: #111; /* डार्क बैकग्राउंड */
+    color: white;
+    /* text-align: center; */ /* No need for this here, handled by parent select */
+    padding: 5px 10px;
+}
+/* --- END: Consolidated Mobile Input Styles --- */
+
+.image-wrapper {
+  margin-top: 30px; /* Adjust spacing above the image */
+  margin-bottom: 30px; /* Adjust spacing below the image */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Ensures image corners are properly rounded */
+  border-radius: 20px; /* More prominent rounded corners for the wrapper */
+  box-shadow: 0 0 20px rgba(0, 209, 255, 0.3); /* Soft glow around the image */
+  max-width: 350px; /* Slightly larger maximum width */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.jalwa-img {
+  width: 100%;
+  height: auto; /* Maintain aspect ratio */
+  display: block;
+  border-radius: 20px; /* Match wrapper's border-radius for seamless look */
+  /* Remove individual box-shadow as it's now on the wrapper */
+  /* object-fit: cover; */ /* If you want to ensure it always fills the wrapper */
+}
+
+.action-buttons {
+  display: flex;
+  flex-direction: column; /* Stack buttons vertically on small screens */
+  gap: 15px; /* Gap between buttons */
+  margin-top: 20px;
+  max-width: 300px; /* Limit width of buttons to match main content flow */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Base style for all action buttons (Register, Login) to match .join-btn */
+.action-buttons .btn {
+  padding: 12px 25px;
+  border-radius: 50px; /* Rounded pill shape */
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-block; /* Allow padding and sizing */
+  text-align: center; /* Ensure text is centered */
+  border: none; /* Remove default button border */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.4); /* General shadow for depth */
+}
+
+/* Specific styles for Register Button */
+.register-btn {
+  background: linear-gradient(135deg, #28a745, #1e7e34); /* Green gradient */
+  box-shadow: 0 0 15px #28a745; /* Green glow */
+}
+
+.register-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px #28a745, 0 0 45px #1e7e34; /* Enhanced green glow on hover */
+}
+
+.register-btn:active {
+  transform: scale(0.97);
+  box-shadow: 0 0 20px #28a745 inset;
+}
+
+/* Specific styles for Login Button */
+.login-btn {
+  background: linear-gradient(135deg, #17a2b8, #117a8b); /* Teal gradient */
+  box-shadow: 0 0 15px #17a2b8; /* Teal glow */
+}
+
+.login-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px #17a2b8, 0 0 45px #117a8b; /* Enhanced teal glow on hover */
+}
+
+.login-btn:active {
+  transform: scale(0.97);
+  box-shadow: 0 0 20px #17a2b8 inset;
+}
+
+@media (min-width: 500px) { /* Adjust breakpoint as needed for side-by-side */
+  .action-buttons {
+    flex-direction: row; /* Arrange buttons side-by-side on larger screens */
+    max-width: 400px; /* Increase max-width for wider layout */
+  }
+}
+
+/* Styles for the new info section */
+.info-section {
+  background: rgba(255, 255, 255, 0.05); /* Light transparent background */
+  backdrop-filter: blur(5px); /* Glassmorphism effect */
+  border-radius: 15px; /* Rounded corners */
+  padding: 30px 25px; /* Ample padding */
+  margin-top: 50px; /* Space from buttons above */
+  margin-bottom: 30px; /* Space from footer below */
+  max-width: 700px; /* Max width to keep content readable */
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left; /* Align text to the left within this section */
+  box-shadow: 0 0 30px rgba(0, 209, 255, 0.15); /* Subtle glow */
+}
+
+.info-section h3 {
+  color: #00d1ff; /* Highlight color for headings */
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  margin-top: 25px;
+  margin-bottom: 15px;
+  text-shadow: 0 0 8px rgba(0, 209, 255, 0.5); /* Soft text shadow for glow */
+}
+
+.info-section h3:first-of-type {
+    margin-top: 0; /* No top margin for the first heading */
+}
+
+.info-section p,
+.info-section li {
+  color: #ccc; /* Lighter text color for body paragraphs and list items */
+  font-size: clamp(0.85rem, 2.5vw, 1rem);
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+.info-section ul,
+.info-section ol {
+  list-style-position: inside; /* Keep list markers inside the content flow */
+  padding-left: 0; /* Remove default padding for lists */
+  margin-bottom: 20px;
+}
+
+.info-section ul li,
+.info-section ol li {
+  margin-bottom: 8px; /* Space between list items */
+}
+
+.info-section a {
+  color: #00d1ff; /* Link color matching highlights */
+  text-decoration: underline; /* Underline links */
+  transition: color 0.2s ease;
+}
+
+.info-section a:hover {
+  color: #fff; /* White on hover */
+}
+
+.highlight-text {
+  color: #00d1ff; /* Consistent highlight color for specific words */
+  font-weight: 600;
+}
+
+/* Adjust for smaller screens */
 @media (max-width: 600px) {
-  .hero h1 {
-    font-size: 2rem;
+  .info-section {
+    padding: 20px 15px;
   }
-
-  .hero p, section p {
-    font-size: 1rem;
+  .info-section h3 {
+    font-size: clamp(1rem, 4vw, 1.5rem);
   }
-
-  .btn.telegram-btn {
-    padding: 12px 24px;
-    font-size: 1rem;
+  .info-section p,
+  .info-section li {
+    font-size: clamp(0.8rem, 3vw, 0.95rem);
   }
 }
