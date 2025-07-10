@@ -1,3 +1,8 @@
+/* At the very top of your style.css or in a reset section */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
 /* 🔻 Sticky Footer Setup (Hamesha Neeche Rahe) */
 html, body {
   height: 100%;
@@ -8,7 +13,7 @@ html, body {
 }
 
 .main-content {
-  flex: 1;
+  flex: 1; /* Ensures it takes up available space, pushing footer down */
 }
 
 /* Reset & Fallback */
@@ -18,22 +23,30 @@ body {
   font-family: 'Poppins', sans-serif;
   background: #000 url('fallback.jpg') no-repeat center center fixed;
   background-size: cover;
-  overflow-x: hidden;
+  overflow-x: hidden; /* Prevent horizontal scroll */
   color: white;
-  /* Remove height: 100% and position: relative from body if they conflict */
-  /* height: 100%; */ /* This might interfere with scrolling if body is limited */
-  /* position: relative; */ /* Not needed if video is fixed to viewport */
+  min-height: 100%;
 }
 
-/* Ensure the body itself allows scrolling for content */
-html, body {
-  min-height: 100%; /* Ensures content can push body height */
+/* Custom Scrollbar */
+body::-webkit-scrollbar {
+  width: 12px;
 }
-
+body::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+body::-webkit-scrollbar-thumb {
+  background-color: #00d1ff;
+  border-radius: 10px;
+  border: 3px solid #1a1a1a;
+}
+body::-webkit-scrollbar-thumb:hover {
+  background-color: #00a0e6;
+}
 
 body::before {
   content: "";
-  position: fixed; /* Keep fixed so it stays with the video */
+  position: fixed;
   top: 0; left: 0;
   width: 100vw;
   height: 100vh;
@@ -43,32 +56,65 @@ body::before {
 }
 
 #bg-video {
-  /* ✅ Change to fixed positioning */
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw; /* Ensure it covers the full viewport width */
-  height: 100vh; /* Ensure it covers the full viewport height */
+  width: 100vw;
+  height: 100vh;
   object-fit: cover;
   filter: brightness(0.75) blur(0.2px);
   z-index: -1;
   opacity: 0;
   transition: opacity 1s ease;
-  /* These are good for ensuring coverage, keep them */
   min-width: 100%;
   min-height: 100%;
 }
 
 #fallback-image {
-  /* ✅ Change to fixed positioning */
   position: fixed;
   top: 0; left: 0;
-  width: 100vw; /* Ensure it covers the full viewport width */
-  height: 100vh; /* Ensure it covers the full viewport height */
+  width: 100vw;
+  height: 100vh;
   object-fit: cover;
   z-index: -2;
   opacity: 1;
   transition: opacity 1s ease;
+}
+
+/* Preloader Styles */
+#preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.95);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  transition: opacity 0.5s ease-out;
+  opacity: 1;
+  visibility: visible;
+}
+
+#preloader.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid #00d1ff;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 
@@ -77,15 +123,13 @@ body::before {
   padding: 80px 20px;
   position: relative;
   z-index: 2;
+  max-width: 900px; /* Limit container width for readability */
+  margin: 0 auto; /* Center the container */
 }
 
 .heading {
   font-size: clamp(1.8rem, 6vw, 3rem);
   margin-bottom: 10px;
-  opacity: 0;
-  transform: translateY(30px);
-  animation: fadeUp 1s ease-out forwards;
-  animation-delay: 0.2s;
   color: white;
 }
 
@@ -100,11 +144,6 @@ body::before {
   margin-top: 10px;
   color: #ccc;
 }
-
-/* .typing-text::after {
-  content: "|";
-  animation: blink 0.8s infinite;
-} */
 
 .sub-text {
   font-size: clamp(0.9rem, 4vw, 1.1rem);
@@ -124,7 +163,7 @@ body::before {
   box-shadow: 0 0 15px #00d1ff;
   transition: all 0.3s ease;
   animation: glowPulse 2.5s infinite;
-  display: inline-block; /* Essential for padding and margins to work on an anchor tag */
+  display: inline-block;
 }
 
 .join-btn:hover {
@@ -137,38 +176,7 @@ body::before {
   box-shadow: 0 0 20px #00d1ff inset;
 }
 
-.socials {
-  margin-top: 40px;
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  font-size: 24px;
-  color: white;
-}
-
-.socials a {
-  color: white;
-  text-decoration: none;
-  transition: transform 0.3s;
-}
-
-.socials a:hover {
-  transform: scale(1.2);
-}
-
 /* Animations */
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-@keyframes fadeUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 @keyframes glowPulse {
   0%, 100% { box-shadow: 0 0 15px #00d1ff; }
   50% { box-shadow: 0 0 30px #00d1ff, 0 0 50px #0066ff; }
@@ -179,14 +187,13 @@ body::before {
   .container {
     padding: 60px 15px;
   }
-
   .join-btn {
     font-size: 0.95rem;
     padding: 10px 20px;
   }
 }
 
-/* --- Footer Glass Card Style (Upgraded) --- */
+/* --- Footer Glass Card Style --- */
 .footer {
   display: flex;
   justify-content: center;
@@ -250,29 +257,7 @@ body::before {
   font-size: 0.75rem;
 }
 
-
-.nav-right .nav-btn:hover {
-  background: linear-gradient(45deg, #0099ff, #0044cc);
-}
-
-/* --- Mobile responsive --- */
-@media (max-width: 400px) {
-  .search-input {
-    max-width: 120px;
-    font-size: 12px;
-    padding: 4px 8px;
-  }
-
-  .nav-right .nav-btn {
-    padding: 4px 8px;
-    font-size: 11.5px;
-  }
-
-  .nav-left i {
-    font-size: 16px;
-  }
-}
-/* --- NAVBAR STYLING WITH EXACT 5PX GAPS --- */
+/* --- NAVBAR STYLING --- */
 .navbar {
   position: fixed;
   top: 0;
@@ -289,7 +274,6 @@ body::before {
   z-index: 999;
 }
 
-/* Left: 3-line menu */
 .nav-left {
   width: 30px;
   display: flex;
@@ -302,7 +286,6 @@ body::before {
   cursor: pointer;
 }
 
-/* Right: Login */
 .nav-right {
   width: 80px;
   display: flex;
@@ -326,7 +309,6 @@ body::before {
   background: linear-gradient(45deg, #0099ff, #0044cc);
 }
 
-/* Center: Search bar with exact spacing */
 .nav-center {
   flex: 1;
   margin: 0 5px;
@@ -350,25 +332,20 @@ body::before {
     height: 48px;
     padding: 0 8px;
   }
-
   .nav-right {
     width: 70px;
   }
-
   .nav-left {
     width: 26px;
   }
-
   .search-input {
     font-size: 13px;
     padding: 5px 12px;
   }
-
   .nav-right .nav-btn {
     font-size: 12px;
     padding: 5px 10px;
   }
-
   .nav-left i {
     font-size: 18px;
   }
@@ -380,82 +357,12 @@ body::before {
   top: 0; left: 0;
   width: 100vw; height: 100vh;
   background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(4px);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 2000;
-}
-
-.login-modal.show {
-  display: flex;
-}
-
-.login-box {
-  background: rgba(255, 255, 255, 0.05);
-  padding: 30px 25px;
-  border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.5);
-  text-align: center;
-  color: white;
-  width: 90%;
-  max-width: 320px;
-}
-
-.login-box h2 {
-  margin-bottom: 20px;
-  font-size: 24px;
-}
-
-.login-input {
-  width: 100%;
-  padding: 10px 15px;
-  margin-bottom: 15px;
-  border-radius: 6px;
-  border: none;
-  background: rgba(255,255,255,0.15);
-  color: white;
-  font-size: 14px;
-  outline: none;
-  text-align: center;
-}
-
-.login-submit {
-  width: 100%;
-  padding: 10px;
-  border: none;
-  border-radius: 6px;
-  background: linear-gradient(45deg, #00d1ff, #0066ff);
-  color: white;
-  font-weight: bold;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.login-switch {
-  margin-top: 12px;
-  font-size: 13px;
-  color: #ccc;
-}
-
-.login-switch a {
-  color: #00c6ff;
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-/* --- LOGIN MODAL STYLING - FINAL CLEAN --- */
-.login-modal {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(6px);
   display: flex;
   justify-content: center;
   align-items: center;
-  visibility: hidden;
-  opacity: 0;
+  visibility: hidden; /* Default hidden */
+  opacity: 0; /* Default invisible */
   transition: opacity 0.4s ease, visibility 0.4s ease;
   z-index: 2000;
 }
@@ -471,7 +378,8 @@ body::before {
   background: rgba(17, 17, 17, 0.7);
   padding: 30px 25px;
   border-radius: 30px;
-  width: 300px;
+  width: 90%; /* Responsive width */
+  max-width: 320px;
   text-align: center;
   transform: scale(0.85) translateY(-20px);
   animation: popupZoom 0.4s ease-out forwards;
@@ -516,18 +424,79 @@ body::before {
   padding: 12px 16px;
   margin: 10px auto;
   border-radius: 50px;
-  border: none;
+  border: 1px solid transparent; /* Default transparent border for validation */
   background: rgba(255,255,255,0.08);
   color: white;
   font-size: 14px;
-  text-align: center;
+  text-align: center; /* Default for most inputs */
   outline: none;
-  transition: box-shadow 0.3s ease;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .login-input:focus {
   box-shadow: 0 0 10px #00d1ff;
+  border-color: #00d1ff; /* Blue border on focus */
 }
+
+/* Validation Feedback Colors */
+.login-input.valid {
+  border-color: #28a745; /* Green */
+  box-shadow: 0 0 8px rgba(40, 167, 69, 0.5);
+}
+.login-input.invalid {
+  border-color: #dc3545; /* Red */
+  box-shadow: 0 0 8px rgba(220, 53, 69, 0.5);
+}
+
+
+/* --- Password Input Group with Toggle --- */
+.password-input-group {
+    position: relative;
+    width: 85%;
+    margin: 10px auto; /* Make sure this is present to center the group */
+    /* Add box-sizing if not already global to prevent padding from adding to width */
+    box-sizing: border-box;
+}
+
+.password-input-group .login-input {
+    width: 100%; /* The input should take full width of its parent (.password-input-group) */
+    padding: 12px 16px; /* Keep your default padding */
+    padding-right: 40px; /* This padding creates space for the eye icon */
+    margin: 0; /* Important: Remove any extra margin on the input itself within the group */
+    text-align: left; /* CHANGED THIS LINE from 'center' to 'left' for password inputs */
+    /* Add box-sizing if not already global */
+    box-sizing: border-box;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 15px; /* This controls the position of the eye icon from the right edge */
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #aaa;
+    font-size: 16px;
+    transition: color 0.2s ease;
+}
+
+
+.toggle-password:hover {
+    color: #fff;
+}
+
+
+/* Password Strength Indicator */
+.password-strength {
+    font-size: 12px;
+    color: #ccc;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    height: 1.2em; /* To prevent layout shift */
+}
+.password-strength.weak { color: #dc3545; }
+.password-strength.medium { color: #ffc107; }
+.password-strength.strong { color: #28a745; }
+
 
 /* --- Login Button --- */
 .login-submit {
@@ -562,46 +531,41 @@ body::before {
 }
 
 /* --- Sidebar menu styles (Final Fix for complete hiding) --- */
-
 .sidebar-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0,0,0,0.4); /* Thoda transparent black overlay */
-  display: none; /* <-- YE HAI SABSE IMPORTANT: Shuru mein bilkul hidden */
-  opacity: 0; /* Smooth fade-in/out ke liye */
-  transition: opacity 0.3s ease; /* Overlay ke smooth transition ke liye */
-  z-index: 1001; /* Content ke upar, sidebar ke neeche */
+  background: rgba(0,0,0,0.4);
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1001;
 }
 
 .sidebar-overlay.show {
-  display: block; /* Jab 'show' class लगे, تب دکھے */
-  opacity: 1; /* Poora visible ho jaye */
+  display: block;
+  opacity: 1;
 }
 
 .sidebar-menu {
   position: fixed;
   top: 0;
-  /* <-- YE HAI SABSE IMPORTANT: Sidebar ko screen ke left se poori tarah bahar kar do */
-  /* Aapki sidebar ki width 230px hai. Toh -230px se zyada negative value rakhein */
-  /* -240px ya -250px isko poori tarah hide kar dega */
-  left: -280px; /* <-- FINAL VALUE: Ye sidebar ko poori tarah hide karega */
-  width: 230px; /* Sidebar ki actual चौड़ाई (width) */
-  height: 100vh; /* Poori height */
-  background: #111; /* Sidebar ka background color */
-  padding: 20px; /* Sidebar ke andar content ke liye padding */
-  box-shadow: 4px 0 10px rgba(0,0,0,0.4); /* Halki si shadow */
-  z-index: 1002; /* Overlay se upar rakho sidebar ko */
-  transition: left 0.3s ease; /* Left se smooth slide-in/slide-out effect */
+  left: -280px; /* Fully hide sidebar initially */
+  width: 230px;
+  height: 100vh;
+  background: #111;
+  padding: 20px;
+  box-shadow: 4px 0 10px rgba(0,0,0,0.4);
+  z-index: 1002;
+  transition: left 0.3s ease;
 }
 
 .sidebar-menu.show {
-  left: 0; /* Jab 'show' class लगे, toh sidebar left edge par aa jaaye */
+  left: 0;
 }
 
-/* Sidebar ke andar ke elements ka CSS jaisa hai waisa hi rehne dein */
 .sidebar-menu .close-sidebar {
   text-align: right;
   font-size: 22px;
@@ -635,207 +599,236 @@ body::before {
 .sidebar-menu ul li a:hover {
   color: #fff;
 }
+
 /* For Date of Birth placeholder and value visibility and centering */
-.login-input[type="date"] {
-  color: #fff; /* Default text color for selected date */
-  text-align: center; /* This centers the selected date */
-  position: relative; /* Needed for absolute positioning of the pseudo-element */
-  padding-left: 16px; /* Adjust as per your input padding */
-  padding-right: 16px; /* Adjust as per your input padding */
-  /* IMPORTANT: Add these to remove default browser styling for date input */
-  -webkit-appearance: none; /* For Chrome, Safari */
-  -moz-appearance: none;    /* For Firefox */
-  appearance: none;         /* Standard */
-  cursor: text; /* Ensures text cursor even if icon is present */
+.login-input[type="date"],
+.login-input[type="text"],
+.login-input[type="email"],
+.login-input[type="password"] {
+  text-align: center; /* Keep centered for these types */
 }
 
-/* Hide the default date picker's displayed text parts for consistent placeholder appearance */
-/* Important: This part specifically makes the *default* date format text transparent. */
+.login-input[type="date"] {
+  color: #fff;
+  position: relative;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: text;
+}
+
 .login-input[type="date"]::-webkit-datetime-edit-text,
 .login-input[type="date"]::-webkit-datetime-edit-month-field,
 .login-input[type="date"]::-webkit-datetime-edit-day-field,
 .login-input[type="date"]::-webkit-datetime-edit-year-field {
-  color: transparent !important; /* Forces the default text to be transparent */
+  color: transparent !important;
 }
 
-/* Hide the default dropdown arrow for cleaner look */
 .login-input[type="date"]::-webkit-calendar-picker-indicator {
-  filter: invert(1); /* Makes the calendar icon white */
-  opacity: 0.8; /* Make it slightly visible */
+  filter: invert(1);
+  opacity: 0.8;
   cursor: pointer;
-  /* Position the calendar icon on the right */
   position: absolute;
-  right: 10px; /* Adjust as needed */
+  right: 10px;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 1; /* Make sure the indicator is clickable */
+  z-index: 1;
 }
 
-/* Show custom placeholder text ONLY if input value is empty */
-/* This is the key change. We use :empty which means the input has no value */
-.login-input[type="date"]:empty::before {
-  content: attr(placeholder); /* Gets text from placeholder attribute */
-  color: rgba(255,255,255,0.4); /* Placeholder color */
+/* Placeholder visibility for date inputs */
+.login-input[type="date"]::before {
+  content: attr(placeholder);
+  color: rgba(255,255,255,0.4);
   width: 100%;
   position: absolute;
   left: 0;
-  top: 50%; /* Center vertically */
-  transform: translateY(-50%); /* Adjust for perfect vertical centering */
-  pointer-events: none; /* Allows clicks to pass through to the actual input */
-  text-align: center; /* Ensure placeholder text is centered */
-  z-index: 0; /* Behind the calendar icon and actual text */
-}
-
-/* When a value IS set, make the actual date text visible and centered */
-/* This rule ensures the entered date is visible and replaces the placeholder. */
-.login-input[type="date"]:not(:empty) {
-  color: #fff !important; /* Make sure the text is white and visible */
-  text-align: center; /* Ensures the valid date is centered */
-}
-
-/* Ensure the text is visible when focused too */
-.login-input[type="date"]:focus {
-  color: #fff !important; /* Text color when input is focused */
-}
-
-
-/* To ensure the default value (e.g., 'dd/mm/yyyy') is also centered and not just the selected date */
-/* This rule is redundant if :placeholder-shown is used correctly, but good for fallback */
-/* .login-input[type="date"] {
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
   text-align: center;
-} */
+  z-index: 0;
+}
+
+.login-input[type="date"].has-value::before {
+  content: ''; /* Hide placeholder when value is present */
+}
+
+
+/* --- NEW CSS CODE FOR SELECT GENDER --- */
+/* Ensure select element behaves like other inputs */
+select.login-input {
+  -webkit-appearance: none; /* Remove default dropdown arrow */
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23ffffff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 16px;
+  text-align: left; /* Align text left within the select */
+  padding-right: 40px; /* Space for custom arrow */
+  color: rgba(255,255,255,0.4); /* Placeholder color by default */
+}
+
+/* Force selected option color to white */
+select.login-input option {
+    background-color: #111; /* Dark background for options */
+    color: white; /* White text for options */
+}
+
+/* Style for selected value when it's not the placeholder */
+select.login-input.has-value {
+    color: white; /* Change text color to white when a value is selected */
+}
+
+/* Placeholder for select element */
+select.login-input option[value=""] {
+  color: rgba(255,255,255,0.4);
+  display: none; /* Hide the default "Select Gender" option once a value is selected */
+}
+
+/* Show placeholder color when no option is selected */
+select.login-input:not(.has-value) {
+    color: rgba(255,255,255,0.4);
+}
+/* --- END NEW CSS CODE --- */
+
+
+.login-input[type="date"]:not(:empty) {
+  color: #fff !important;
+  text-align: center;
+}
+
+.login-input[type="date"]:focus {
+  color: #fff !important;
+}
 
 
 /* --- START: Consolidated Mobile Input Styles --- */
-/* यह नया कंटेनर है जो मोबाइल नंबर और कंट्री कोड को एक ही लाइन में रखेगा */
 .single-mobile-input {
-    display: flex; /* flexbox का उपयोग ताकि दोनों एक लाइन में हों */
-    align-items: center; /* वर्टिकल सेंटर अलाइनमेंट */
-    /* justify-content: center; */ /* इसे हटा दें ताकि कंट्री कोड लेफ्ट में अलाइन हो */
-    margin: 10px auto 15px auto; /* ऊपर और नीचे मार्gin, और हॉरिज़ॉन्टल सेंटर */
-    width: 85%; /* पूरे login-box के इनपुट के जैसी चौड़ाई */
-    background: rgba(255,255,255,0.08); /* इनपुट के जैसा बैकग्राउंड */
-    border-radius: 50px; /* गोलाकार किनारे */
-    padding: 0 10px; /* अंदरूनी पैडिंग */
-    box-sizing: border-box; /* पैडिंग को चौड़ाई में शामिल करें */
-    height: 40px; /* fixed height for consistent look */
-    /* Transition for glow on focus (similar to login-input) */
-    transition: box-shadow 0.3s ease;
+    display: flex;
+    align-items: center;
+    margin: 10px auto 15px auto;
+    width: 85%;
+    background: rgba(255,255,255,0.08);
+    border-radius: 50px;
+    padding: 0 10px;
+    box-sizing: border-box;
+    height: 40px;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    border: 1px solid transparent; /* Default transparent border for validation */
 }
 
 .single-mobile-input:focus-within {
-    box-shadow: 0 0 10px #00d1ff; /* जब कोई भी इनपुट focus में हो तो पूरे बॉक्स पर glow */
+    box-shadow: 0 0 10px #00d1ff;
+    border-color: #00d1ff;
+}
+.single-mobile-input.valid {
+  border-color: #28a745;
+  box-shadow: 0 0 8px rgba(40, 167, 69, 0.5);
+}
+.single-mobile-input.invalid {
+  border-color: #dc3545;
+  box-shadow: 0 0 8px rgba(220, 53, 69, 0.5);
 }
 
-/* मोबाइल नंबर इनपुट फ़ील्ड */
+
 .single-mobile-input .login-input {
-    flex-grow: 1; /* बची हुई जगह ले लेगा */
-    border: none; /* कोई बॉर्डर नहीं */
-    background: transparent; /* पारदर्शी बैकग्राउंड */
+    flex-grow: 1;
+    border: none; /* No individual border for this input */
+    background: transparent;
     color: white;
     font-size: 14px;
-    outline: none; /* आउटलाइन हटाएँ */
-    padding: 0 5px; /* इनपुट के अंदर की पैडिंग */
-    text-align: left; /* 🟢 UPDATED: मोबाइल नंबर लेफ्ट में रहेगा */
-    margin: 0; /* पैरेंट flexbox में होने के कारण मार्gin हटा दें */
+    outline: none;
+    padding: 0 5px;
+    text-align: left;
+    margin: 0; /* Reset margin from general .login-input */
 }
 
-/* कंट्री कोड सिलेक्ट बॉक्स */
 .country-code-select {
-    border: none; /* कोई बॉर्डर नहीं */
-    background: transparent; /* पारदर्शी बैकग्राउंड */
+    border: none;
+    background: transparent;
     color: white;
     font-size: 14px;
-    outline: none; /* आउटलाइन हटाएँ */
-    appearance: none; /* डिफ़ॉल्ट तीर हटाएँ */
+    outline: none;
+    appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
     cursor: pointer;
-    text-align: center; /* 🟢 UPDATED: कंट्री कोड अपने छोटे बॉक्स में सेंटर में रहेगा */
-    padding: 0 5px; /* पैडिंग */
-    min-width: 50px; /* न्यूनतम चौड़ाई */
-    max-width: 70px; /* अधिकतम चौड़ाई */
-    text-overflow: ellipsis; /* यदि टेक्स्ट लंबा हो तो ... दिखाएँ */
-    white-space: nowrap; /* टेक्स्ट को एक लाइन में रखें */
-    overflow: hidden; /* ओवरफ्लो को छुपाएँ */
-
-    /* Add a small right border to visually separate */
-    border-right: 1px solid rgba(255,255,255,0.2); /* 🟢 NEW: एक पतली वर्टिकल लाइन */
-    margin-right: 10px; /* 🟢 NEW: कंट्री कोड और मोबाइल इनपुट के बीच जगह */
-
-    /* कस्टम तीर (arrow) */
+    text-align: center;
+    padding: 0 5px;
+    min-width: 50px;
+    max-width: 70px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 1px solid rgba(255,255,255,0.2);
+    margin-right: 10px;
     background-image: url('data:image/svg+xml;utf8,<svg fill="%23ffffff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
     background-repeat: no-repeat;
-    background-position: right 5px center; /* 🟢 UPDATED: तीर को थोड़ा राइट में खिसकाया ताकि बॉर्डर से दूर रहे */
+    background-position: right 5px center;
     background-size: 16px;
 }
 
-/* ड्रॉपडाउन खुलने पर ऑप्शन का स्टाइल */
 .country-code-select option {
-    background-color: #111; /* डार्क बैकग्राउंड */
+    background-color: #111;
     color: white;
-    /* text-align: center; */ /* No need for this here, handled by parent select */
     padding: 5px 10px;
 }
 /* --- END: Consolidated Mobile Input Styles --- */
 
 .image-wrapper {
-  margin-top: 30px; /* Adjust spacing above the image */
-  margin-bottom: 30px; /* Adjust spacing below the image */
+  margin-top: 30px;
+  margin-bottom: 30px;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden; /* Ensures image corners are properly rounded */
-  border-radius: 20px; /* More prominent rounded corners for the wrapper */
-  box-shadow: 0 0 20px rgba(0, 209, 255, 0.3); /* Soft glow around the image */
-  max-width: 350px; /* Slightly larger maximum width */
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(0, 209, 255, 0.3);
+  max-width: 350px;
   margin-left: auto;
   margin-right: auto;
 }
 
 .jalwa-img {
   width: 100%;
-  height: auto; /* Maintain aspect ratio */
+  height: auto;
   display: block;
-  border-radius: 20px; /* Match wrapper's border-radius for seamless look */
-  /* Remove individual box-shadow as it's now on the wrapper */
-  /* object-fit: cover; */ /* If you want to ensure it always fills the wrapper */
+  border-radius: 20px;
 }
 
 .action-buttons {
   display: flex;
-  flex-direction: column; /* Stack buttons vertically on small screens */
-  gap: 15px; /* Gap between buttons */
+  flex-direction: column;
+  gap: 15px;
   margin-top: 20px;
-  max-width: 300px; /* Limit width of buttons to match main content flow */
+  max-width: 300px;
   margin-left: auto;
   margin-right: auto;
 }
 
-/* Base style for all action buttons (Register, Login) to match .join-btn */
 .action-buttons .btn {
   padding: 12px 25px;
-  border-radius: 50px; /* Rounded pill shape */
+  border-radius: 50px;
   font-size: 1rem;
   font-weight: 600;
   color: white;
   text-decoration: none;
   transition: all 0.3s ease;
-  display: inline-block; /* Allow padding and sizing */
-  text-align: center; /* Ensure text is centered */
-  border: none; /* Remove default button border */
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.4); /* General shadow for depth */
+  display: inline-block;
+  text-align: center;
+  border: none;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
 }
 
-/* Specific styles for Register Button */
 .register-btn {
-  background: linear-gradient(135deg, #28a745, #1e7e34); /* Green gradient */
-  box-shadow: 0 0 15px #28a745; /* Green glow */
+  background: linear-gradient(135deg, #28a745, #1e7e34);
+  box-shadow: 0 0 15px #28a745;
 }
 
 .register-btn:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 25px #28a745, 0 0 45px #1e7e34; /* Enhanced green glow on hover */
+  box-shadow: 0 0 25px #28a745, 0 0 45px #1e7e34;
 }
 
 .register-btn:active {
@@ -843,15 +836,14 @@ body::before {
   box-shadow: 0 0 20px #28a745 inset;
 }
 
-/* Specific styles for Login Button */
 .login-btn {
-  background: linear-gradient(135deg, #17a2b8, #117a8b); /* Teal gradient */
-  box-shadow: 0 0 15px #17a2b8; /* Teal glow */
+  background: linear-gradient(135deg, #17a2b8, #117a8b);
+  box-shadow: 0 0 15px #17a2b8;
 }
 
 .login-btn:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 25px #17a2b8, 0 0 45px #117a8b; /* Enhanced teal glow on hover */
+  box-shadow: 0 0 25px #17a2b8, 0 0 45px #117a8b;
 }
 
 .login-btn:active {
@@ -859,43 +851,43 @@ body::before {
   box-shadow: 0 0 20px #17a2b8 inset;
 }
 
-@media (min-width: 500px) { /* Adjust breakpoint as needed for side-by-side */
+@media (min-width: 500px) {
   .action-buttons {
-    flex-direction: row; /* Arrange buttons side-by-side on larger screens */
-    max-width: 400px; /* Increase max-width for wider layout */
+    flex-direction: row;
+    max-width: 400px;
   }
 }
 
 /* Styles for the new info section */
 .info-section {
-  background: rgba(255, 255, 255, 0.05); /* Light transparent background */
-  backdrop-filter: blur(5px); /* Glassmorphism effect */
-  border-radius: 15px; /* Rounded corners */
-  padding: 30px 25px; /* Ample padding */
-  margin-top: 50px; /* Space from buttons above */
-  margin-bottom: 30px; /* Space from footer below */
-  max-width: 700px; /* Max width to keep content readable */
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(5px);
+  border-radius: 15px;
+  padding: 30px 25px;
+  margin-top: 50px;
+  margin-bottom: 30px;
+  max-width: 700px;
   margin-left: auto;
   margin-right: auto;
-  text-align: left; /* Align text to the left within this section */
-  box-shadow: 0 0 30px rgba(0, 209, 255, 0.15); /* Subtle glow */
+  text-align: left;
+  box-shadow: 0 0 30px rgba(0, 209, 255, 0.15);
 }
 
 .info-section h3 {
-  color: #00d1ff; /* Highlight color for headings */
+  color: #00d1ff;
   font-size: clamp(1.2rem, 3vw, 1.8rem);
   margin-top: 25px;
   margin-bottom: 15px;
-  text-shadow: 0 0 8px rgba(0, 209, 255, 0.5); /* Soft text shadow for glow */
+  text-shadow: 0 0 8px rgba(0, 209, 255, 0.5);
 }
 
 .info-section h3:first-of-type {
-    margin-top: 0; /* No top margin for the first heading */
+    margin-top: 0;
 }
 
 .info-section p,
 .info-section li {
-  color: #ccc; /* Lighter text color for body paragraphs and list items */
+  color: #ccc;
   font-size: clamp(0.85rem, 2.5vw, 1rem);
   line-height: 1.6;
   margin-bottom: 15px;
@@ -903,28 +895,28 @@ body::before {
 
 .info-section ul,
 .info-section ol {
-  list-style-position: inside; /* Keep list markers inside the content flow */
-  padding-left: 0; /* Remove default padding for lists */
+  list-style-position: inside;
+  padding-left: 0;
   margin-bottom: 20px;
 }
 
 .info-section ul li,
 .info-section ol li {
-  margin-bottom: 8px; /* Space between list items */
+  margin-bottom: 8px;
 }
 
 .info-section a {
-  color: #00d1ff; /* Link color matching highlights */
-  text-decoration: underline; /* Underline links */
+  color: #00d1ff;
+  text-decoration: underline;
   transition: color 0.2s ease;
 }
 
 .info-section a:hover {
-  color: #fff; /* White on hover */
+  color: #fff;
 }
 
 .highlight-text {
-  color: #00d1ff; /* Consistent highlight color for specific words */
+  color: #00d1ff;
   font-weight: 600;
 }
 
@@ -940,4 +932,11 @@ body::before {
   .info-section li {
     font-size: clamp(0.8rem, 3vw, 0.95rem);
   }
+}
+
+/* Text for modal info/errors */
+.modal-info-text {
+    font-size: 0.9rem;
+    color: #bbb;
+    margin-bottom: 20px;
 }
