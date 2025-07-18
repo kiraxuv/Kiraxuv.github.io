@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Sitemap:
+https://kiraxuv.github.io/sitemap.xlm
